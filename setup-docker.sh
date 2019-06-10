@@ -10,6 +10,17 @@ apt-get -y install docker-ce docker-ce-cli containerd.io
 
 cp /vagrant/docker.service /lib/systemd/system/
 
+cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
 systemctl daemon-reload
 systemctl restart docker
 
